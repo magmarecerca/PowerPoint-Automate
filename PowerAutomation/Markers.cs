@@ -1,8 +1,9 @@
 ﻿namespace PowerAutomation;
 
 public record Markers(
+	string PrizeName = "{{PrizeName}}",
 	string Title = "{{Title}}",
 	string Author = "{{Author}}",
-	string PrizeName = "{{PrizeName}}",
-	string ParticipantImage = "{{ParticipantImage}}"
+	string ParticipantImage = "{{ParticipantImage}}",
+	string PrizeLogo = "{{PrizeLogo}}"
 );
