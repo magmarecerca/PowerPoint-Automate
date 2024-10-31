@@ -25,10 +25,4 @@ public class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Markers mark
 
 		throw new KeyNotFoundException($"No marker found for {marker}.");
 	}
-
-	public void Print() {
-		foreach (Shape shape in slide.Shapes.Cast<Shape>().Where(shape => shape.TextFrame.HasText.AsBool())) {
-			Console.WriteLine(shape.TextFrame.TextRange.Text);
-		}
-	}
 }

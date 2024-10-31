@@ -37,9 +37,6 @@ public class PowerPoint : IDisposable {
 	}
 
 	public void Dispose() {
-		foreach (Slide sli in _slides) {
-			sli.Print();
-		}
 		_presentation.Close();
 		_pptApplication.Quit();
 	}
