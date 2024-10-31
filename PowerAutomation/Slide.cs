@@ -100,6 +100,16 @@ public partial class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Mark
 		}
 	}
 
+	public void RemoveTemplateElements() {
+		foreach (Shape shape in slide.Shapes) {
+			if (!shape.TextFrame.HasText.AsBool())
+				continue;
+
+			if (TemplateRegex().IsMatch(shape.TextFrame.TextRange.Text))
+				shape.Delete();
+		}
+	}
+
 	public void MoveTo(int number) {
 		slide.MoveTo(number);
 	}

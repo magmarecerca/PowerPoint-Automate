@@ -33,8 +33,14 @@ public class Generator(PowerPoint powerPoint, string participantImagesFolderPath
 
 	private void CreatePrizeWinnerSlide(int slideNumber, Prize prize) {
 		Slide resultSlide = powerPoint.DuplicateSlideAt(slideNumber + 1, _prizeResultTemplate);
+
+		if (string.IsNullOrEmpty(prize.Title)) {
+			resultSlide.SetProjectTitle("Desert");
+			resultSlide.RemoveTemplateElements();
+			return;
+		}
 		resultSlide.SetProjectTitle(prize.Title);
-		resultSlide.SetAuthors(prize.Author);
+		resultSlide.SetAuthors($"{prize.Author1}\n{prize.Author2}\n{prize.Author3}\n{prize.Author4}");
 		string participantImage = Path.Combine(participantImagesFolderPath, prize.ParticipantImage);
 		resultSlide.SetParticipantImage(participantImage);
 	}
