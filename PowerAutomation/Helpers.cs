@@ -1,4 +1,6 @@
-﻿using Microsoft.Office.Core;
+﻿using System.Drawing;
+using Microsoft.Office.Core;
+using System.Drawing;
 
 namespace PowerAutomation;
 
@@ -14,4 +16,11 @@ internal static class Helpers {
 				"Cannot cast 'msoTriStateMixed' to bool."),
 			_ => throw new ArgumentOutOfRangeException(nameof(state), "Unknown MsoTriState value.")
 		};
+
+	public static SizeF GetImageSize(string imagePath) {
+#pragma warning disable CA1416
+		using Image img = Image.FromFile(imagePath);
+		return new SizeF(img.Width, img.Height);
+#pragma warning restore CA1416
+	}
 }
