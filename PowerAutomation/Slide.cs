@@ -101,13 +101,16 @@ public partial class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Mark
 	}
 
 	public void RemoveTemplateElements() {
+		List<Shape> shapesToRemove = new();
 		foreach (Shape shape in slide.Shapes) {
 			if (!shape.TextFrame.HasText.AsBool())
 				continue;
 
 			if (TemplateRegex().IsMatch(shape.TextFrame.TextRange.Text))
-				shape.Delete();
+				shapesToRemove.Add(shape);
 		}
+		foreach (Shape shape in shapesToRemove)
+			shape.Delete();
 	}
 
 	public void MoveTo(int number) {
