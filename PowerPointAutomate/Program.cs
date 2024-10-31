@@ -14,6 +14,7 @@ internal abstract class Program {
 		Slide slide = powerPoint.GetSlide(1);
 		slide.SetTitle("Updated Title from Template!");
 		slide.SetText("This slide was edited using C# from a template.");
+		powerPoint.RemoveSlide(slide);
 
 		// Slide newSlide = powerPoint.CreateSlide(2, PpSlideLayout.ppLayoutText);
 		// newSlide.SetTitle("New Slide Title");

@@ -25,4 +25,8 @@ public class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Markers mark
 
 		throw new KeyNotFoundException($"No marker found for {marker}.");
 	}
+
+	internal void Delete() {
+		slide.Delete();
+	}
 }

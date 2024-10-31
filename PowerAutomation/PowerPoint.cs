@@ -31,6 +31,10 @@ public class PowerPoint : IDisposable {
 		return _slides[index - 1];
 	}
 	public Slide GetSlide(int index) => _slides[index - 1];
+	public void RemoveSlide(Slide slide) {
+		_slides.Remove(slide);
+		slide.Delete();
+	}
 
 	public void SaveAs(string filePath) {
 		_presentation.SaveAs(filePath);
