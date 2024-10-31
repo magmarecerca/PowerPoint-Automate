@@ -22,14 +22,6 @@ public class PowerPoint : IDisposable {
 
 	public PowerPoint(string filePath, Markers markers) : this(filePath) => _markers = markers;
 
-	public Slide CreateSlide(int index, PpSlideLayout layout) {
-		Microsoft.Office.Interop.PowerPoint.Slide slide = _presentation.Slides.Add(index, layout);
-		Slide newSlide = new(slide, _markers);
-		_slides.Add(newSlide);
-
-		return newSlide;
-	}
-
 	public Slide GetSlide(int number) {
 		foreach (Slide slide in _slides.Where(slide => slide.GetSlideNumber() == number)) {
 			return slide;
