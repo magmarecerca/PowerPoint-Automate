@@ -6,7 +6,7 @@ internal abstract class Program {
 	private static void Main(string[] args) {
 		if (args.Length == 0) {
 			Console.WriteLine("Drag and drop the prizes CSV file to run the app.");
-			return;
+			goto program_end;
 		}
 
 		string csvPath = args[0];
@@ -24,5 +24,9 @@ internal abstract class Program {
 		generator.Export(saveFilePath);
 
 		powerPoint.Dispose();
+
+		program_end:
+		Console.WriteLine("Program execution completed, press any key to exit...");
+		Console.ReadKey();
 	}
 }
