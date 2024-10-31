@@ -54,11 +54,10 @@ public partial class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Mark
 			float width = shape.Width;
 			float height = shape.Height;
 
-			shape.Delete();
-
 			RectangleF rectangle = CalculateImageSize(imagePath, left, top, width, height);
 			slide.Shapes.AddPicture(imagePath, MsoTriState.msoFalse, MsoTriState.msoCTrue,
 				rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+			shape.Delete();
 			return;
 		}
 

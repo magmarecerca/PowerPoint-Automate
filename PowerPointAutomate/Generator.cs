@@ -25,7 +25,7 @@ public class Generator(PowerPoint powerPoint, string participantImagesFolderPath
 			resultSlide.SetAuthors(prize.Author);
 			string participantImage = Path.Combine(participantImagesFolderPath, prize.ParticipantImage);
 			resultSlide.SetParticipantImage(participantImage);
-			Console.WriteLine($"Generated slides for prize: {prize.PrizeName}");
+			Console.WriteLine($"({i + 1}/{prizes.Count}) Generated slides for prize: {prize.PrizeName}");
 		}
 
 		Console.WriteLine("Presentation modified successfully");
