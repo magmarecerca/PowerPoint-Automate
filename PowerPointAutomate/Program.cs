@@ -1,6 +1,4 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
-using PowerAutomation;
-using Slide = PowerAutomation.Slide;
+﻿using PowerAutomation;
 
 namespace PowerPointAutomate;
 
