@@ -12,6 +12,8 @@ public class PowerPoint : IDisposable {
 	private readonly SortedSet<Slide> _slides = [];
 	private readonly Markers _markers = new();
 
+	public int LastSlideNumber => _slides.Count;
+
 	public PowerPoint(string filePath) {
 		_presentation = _pptApplication.Presentations.Open(filePath, WithWindow: MsoTriState.msoFalse);
 
@@ -39,6 +41,10 @@ public class PowerPoint : IDisposable {
 		slide.MoveTo(number);
 		_slides.Add(slide);
 		return slide;
+	}
+
+	public Slide DuplicateSlide(Slide original) {
+		return DuplicateSlideAt(original.GetSlideNumber() + 1, original);
 	}
 
 	public void SaveAs(string filePath) {
