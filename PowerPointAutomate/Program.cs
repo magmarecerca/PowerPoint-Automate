@@ -7,14 +7,17 @@ internal abstract class Program {
 		const string templateFilePath = @"E:\TemplatePresentation.pptx";
 		const string saveFilePath = @"E:\ModifiedPresentation.pptx";
 
-		PowerPoint powerPoint = new(templateFilePath);
 		Markers markers = new();
-		powerPoint.SetMarkers(markers);
+		PowerPoint powerPoint = new(templateFilePath, markers);
 
 		Slide slide = powerPoint.GetSlide(1);
+		powerPoint.DuplicateSlideAt(3, slide);
 		slide.SetTitle("Updated Title from Template!");
 		slide.SetText("This slide was edited using C# from a template.");
-		powerPoint.RemoveSlide(slide);
+
+		slide = powerPoint.GetSlide(3);
+		slide.SetTitle("Copy of first slide with different title.");
+		slide.SetText("This slide was edited using C# from a template.");
 
 		// Slide newSlide = powerPoint.CreateSlide(2, PpSlideLayout.ppLayoutText);
 		// newSlide.SetTitle("New Slide Title");

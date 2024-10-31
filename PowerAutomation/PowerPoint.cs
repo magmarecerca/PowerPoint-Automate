@@ -9,8 +9,8 @@ public class PowerPoint : IDisposable {
 	};
 
 	private readonly Presentation _presentation;
-	private readonly List<Slide> _slides = [];
-	private Markers _markers = new();
+	private readonly SortedSet<Slide> _slides = [];
+	private readonly Markers _markers = new();
 
 	public PowerPoint(string filePath) {
 		_presentation = _pptApplication.Presentations.Open(filePath, WithWindow: MsoTriState.msoFalse);
@@ -20,20 +20,33 @@ public class PowerPoint : IDisposable {
 		}
 	}
 
-	public void SetMarkers(Markers markers) {
-		_markers = markers;
-	}
+	public PowerPoint(string filePath, Markers markers) : this(filePath) => _markers = markers;
 
 	public Slide CreateSlide(int index, PpSlideLayout layout) {
 		Microsoft.Office.Interop.PowerPoint.Slide slide = _presentation.Slides.Add(index, layout);
-		_slides.Insert(index - 1, new Slide(slide, _markers));
+		Slide newSlide = new(slide, _markers);
+		_slides.Add(newSlide);
 
-		return _slides[index - 1];
+		return newSlide;
 	}
-	public Slide GetSlide(int index) => _slides[index - 1];
+
+	public Slide GetSlide(int number) {
+		foreach (Slide slide in _slides.Where(slide => slide.GetSlideNumber() == number)) {
+			return slide;
+		}
+		throw new ArgumentOutOfRangeException($"The slide with number {number} does not exist.");
+	}
+
 	public void RemoveSlide(Slide slide) {
 		_slides.Remove(slide);
 		slide.Delete();
+	}
+
+	public Slide DuplicateSlideAt(int number, Slide original) {
+		Slide slide = original.Duplicate();
+		slide.MoveTo(number);
+		_slides.Add(slide);
+		return slide;
 	}
 
 	public void SaveAs(string filePath) {
