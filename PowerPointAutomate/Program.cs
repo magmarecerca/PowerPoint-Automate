@@ -19,6 +19,7 @@ internal abstract class Program {
 		slide.SetTitle("Copy of first slide with different title.");
 		slide.SetText("This slide was edited using C# from a template.");
 
+		powerPoint.RemoveTemplateSlides();
 		powerPoint.SaveAs(saveFilePath);
 
 		powerPoint.Dispose();

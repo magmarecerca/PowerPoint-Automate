@@ -55,4 +55,13 @@ public class PowerPoint : IDisposable {
 		_presentation.Close();
 		_pptApplication.Quit();
 	}
+
+	/// <summary>
+	/// <b>WARNING:</b> this method is destructive, you should call it right before exporting the project.
+	/// </summary>
+	public void RemoveTemplateSlides() {
+		List<Slide> templateSlides = _slides.Where(slide => slide.IsTemplate()).ToList();
+		foreach (Slide slide in templateSlides)
+			RemoveSlide(slide);
+	}
 }

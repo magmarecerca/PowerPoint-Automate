@@ -1,9 +1,10 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System.Text.RegularExpressions;
+using Microsoft.Office.Interop.PowerPoint;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerAutomation;
 
-public class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Markers markers) : IComparable<Slide> {
+public partial class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Markers markers) : IComparable<Slide> {
 	public void SetTitle(string text) {
 		GetTextRangeByMarker(markers.Title).Text = text;
 	}
@@ -27,7 +28,18 @@ public class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Markers mark
 	}
 
 	public int GetSlideNumber() => slide.SlideNumber;
-	internal int GetSlideIndex() => slide.SlideIndex;
+
+	public bool IsTemplate() {
+		foreach (Shape shape in slide.Shapes) {
+			if (!shape.TextFrame.HasText.AsBool())
+				continue;
+
+			if (TemplateRegex().IsMatch(shape.TextFrame.TextRange.Text))
+				return true;
+		}
+
+		return false;
+	}
 
 	public void MoveTo(int number) {
 		slide.MoveTo(number);
@@ -46,4 +58,7 @@ public class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Markers mark
 
 		return GetSlideNumber().CompareTo(other.GetSlideNumber());
 	}
+
+    [GeneratedRegex(@"\{\{[^{}]+\}\}")]
+    private static partial Regex TemplateRegex();
 }
