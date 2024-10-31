@@ -9,21 +9,26 @@ internal abstract class Program {
 			goto program_end;
 		}
 
-		string csvPath = args[0];
-		string rootPath = Path.GetDirectoryName(csvPath) ?? throw new InvalidOperationException();
-		string templateFilePath = Path.Combine(rootPath, "TemplatePresentation.pptx");
-		string saveFilePath = Path.Combine(rootPath, "ModifiedPresentation.pptx");
-		string participantImagesFolderPath = Path.Combine(rootPath, "Participants");
-		string logosFolderPath = Path.Combine(rootPath, "Logos");
+		try {
+			string csvPath = args[0];
+			string rootPath = Path.GetDirectoryName(csvPath) ?? throw new InvalidOperationException();
+			string templateFilePath = Path.Combine(rootPath, "TemplatePresentation.pptx");
+			string saveFilePath = Path.Combine(rootPath, "ModifiedPresentation.pptx");
+			string participantImagesFolderPath = Path.Combine(rootPath, "Participants");
+			string logosFolderPath = Path.Combine(rootPath, "Logos");
 
-		Markers markers = new();
-		PowerPoint powerPoint = new(templateFilePath, markers);
+			Markers markers = new();
+			PowerPoint powerPoint = new(templateFilePath, markers);
 
-		Generator generator = new(powerPoint, participantImagesFolderPath, logosFolderPath);
-		generator.Generate(csvPath);
-		generator.Export(saveFilePath);
+			Generator generator = new(powerPoint, participantImagesFolderPath, logosFolderPath);
+			generator.Generate(csvPath);
+			generator.Export(saveFilePath);
 
-		powerPoint.Dispose();
+			powerPoint.Dispose();
+		}
+		catch (Exception e) {
+			Console.WriteLine(e);
+		}
 
 		program_end:
 		Console.WriteLine("Program execution completed, press any key to exit...");
