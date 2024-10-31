@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using Microsoft.Office.Core;
-using System.Drawing;
 
 namespace PowerAutomation;
 
