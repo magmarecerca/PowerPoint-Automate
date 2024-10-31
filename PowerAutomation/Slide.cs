@@ -7,16 +7,28 @@ using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 namespace PowerAutomation;
 
 public partial class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Markers markers) : IComparable<Slide> {
-	public void SetTitle(string text) {
+	public void SetProjectTitle(string text) {
 		GetTextRangeByMarker(markers.Title).Text = text;
 	}
 
-	public void SetText(string text) {
+	public void SetAuthors(string text) {
 		GetTextRangeByMarker(markers.Author).Text = text;
 	}
 
-	public void SetImage(string imagePath) {
-		SetImageByMarker(markers.ParticipantImage, imagePath);
+	public void SetParticipantImage(string imagePath) {
+		//TODO: Replace with proper image loader
+		GetTextRangeByMarker(markers.ParticipantImage).Text = imagePath;
+		// SetImageByMarker(markers.ParticipantImage, imagePath);
+	}
+
+	public void SetPrizeName(string text) {
+		GetTextRangeByMarker(markers.PrizeName).Text = text;
+	}
+
+	public void SetPrizeLogo(string imagePath) {
+		//TODO: Replace with proper image loader
+		GetTextRangeByMarker(markers.PrizeLogo).Text = imagePath;
+		// SetImageByMarker(markers.ParticipantImage, imagePath);
 	}
 
 	private TextRange GetTextRangeByMarker(string marker) {
