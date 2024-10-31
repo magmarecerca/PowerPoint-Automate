@@ -30,7 +30,6 @@ public class Generator {
 			Slide resultSlide = _powerPoint.DuplicateSlideAt(newSlideNumber + 1, _prizeResultTemplate);
 			resultSlide.SetProjectTitle(prize.Title);
 			resultSlide.SetAuthors(prize.Author);
-			Console.WriteLine(prize.Author);
 			resultSlide.SetParticipantImage(prize.ParticipantImage);
 		}
 
