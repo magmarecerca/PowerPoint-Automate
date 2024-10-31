@@ -4,17 +4,9 @@ using PowerAutomation;
 
 namespace PowerPointAutomate;
 
-public class Generator {
-	private readonly PowerPoint _powerPoint;
-	private readonly Slide _prizeTitleTemplate;
-	private readonly Slide _prizeResultTemplate;
-
-	public Generator(PowerPoint powerPoint) {
-		_powerPoint = powerPoint;
-
-		_prizeTitleTemplate = powerPoint.GetSlide(2);
-		_prizeResultTemplate = powerPoint.GetSlide(3);
-	}
+public class Generator(PowerPoint powerPoint, string participantImagesFolderPath, string logosFolderPath) {
+	private readonly Slide _prizeTitleTemplate = powerPoint.GetSlide(2);
+	private readonly Slide _prizeResultTemplate = powerPoint.GetSlide(3);
 
 	public void Generate(string csvPath) {
 		List<Prize> prizes = GetPrizes(csvPath);
@@ -23,20 +15,23 @@ public class Generator {
 			Prize prize = prizes[i];
 
 			int newSlideNumber = _prizeTitleTemplate.SlideNumber + 2 + 2 * i;
-			Slide titleSlide = _powerPoint.DuplicateSlideAt(newSlideNumber, _prizeTitleTemplate);
+			Slide titleSlide = powerPoint.DuplicateSlideAt(newSlideNumber, _prizeTitleTemplate);
 			titleSlide.SetPrizeName(prize.PrizeName);
-			titleSlide.SetPrizeLogo(prize.PrizeLogo);
+			string prizeLogo = Path.Combine(logosFolderPath, prize.PrizeLogo);
+			titleSlide.SetPrizeLogo(prizeLogo);
 
-			Slide resultSlide = _powerPoint.DuplicateSlideAt(newSlideNumber + 1, _prizeResultTemplate);
+			Slide resultSlide = powerPoint.DuplicateSlideAt(newSlideNumber + 1, _prizeResultTemplate);
 			resultSlide.SetProjectTitle(prize.Title);
 			resultSlide.SetAuthors(prize.Author);
-			resultSlide.SetParticipantImage(prize.ParticipantImage);
+			string participantImage = Path.Combine(participantImagesFolderPath, prize.ParticipantImage);
+			resultSlide.SetParticipantImage(participantImage);
+			Console.WriteLine($"Generated slides for prize: {prize.PrizeName}");
 		}
 
 		Console.WriteLine("Presentation modified successfully");
 	}
 
-	private List<Prize> GetPrizes(string csvPath) {
+	private static List<Prize> GetPrizes(string csvPath) {
 		List<Prize> prizes = [];
 
 		using StreamReader reader = new(csvPath);
@@ -47,8 +42,8 @@ public class Generator {
 	}
 
 	public void Export(string exportPath) {
-		_powerPoint.RemoveTemplateSlides();
-		_powerPoint.SaveAs(exportPath);
+		powerPoint.RemoveTemplateSlides();
+		powerPoint.SaveAs(exportPath);
 
 		Console.WriteLine($"Presentation saved successfully at {exportPath}");
 	}

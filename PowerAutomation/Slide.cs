@@ -16,9 +16,7 @@ public partial class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Mark
 	}
 
 	public void SetParticipantImage(string imagePath) {
-		//TODO: Replace with proper image loader
-		GetTextRangeByMarker(markers.ParticipantImage).Text = imagePath;
-		// SetImageByMarker(markers.ParticipantImage, imagePath);
+		SetImageByMarker(markers.ParticipantImage, imagePath);
 	}
 
 	public void SetPrizeName(string text) {
@@ -26,9 +24,7 @@ public partial class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Mark
 	}
 
 	public void SetPrizeLogo(string imagePath) {
-		//TODO: Replace with proper image loader
-		GetTextRangeByMarker(markers.PrizeLogo).Text = imagePath;
-		// SetImageByMarker(markers.ParticipantImage, imagePath);
+		SetImageByMarker(markers.PrizeLogo, imagePath);
 	}
 
 	private TextRange GetTextRangeByMarker(string marker) {
