@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Interop.PowerPoint;
 using PowerAutomation;
+using Slide = PowerAutomation.Slide;
 
 namespace PowerPointAutomate;
 
@@ -10,16 +11,13 @@ internal abstract class Program {
 
 		PowerPoint powerPoint = new(templateFilePath);
 
-		Slide slide = powerPoint.Slides[1];
+		Slide slide = powerPoint.GetSlide(1);
+		slide.SetTitle("Updated Title from Template!");
+		slide.SetText("This slide was edited using C# from a template.");
 
-		if (slide.Shapes.Count >= 2) {
-			slide.Shapes[1].TextFrame.TextRange.Text = "Updated Title from Template!";
-			slide.Shapes[2].TextFrame.TextRange.Text = "This slide was edited using C# from a template.";
-		}
-
-		Slide newSlide = powerPoint.Slides.Add(2, PpSlideLayout.ppLayoutText);
-		newSlide.Shapes[1].TextFrame.TextRange.Text = "New Slide Title";
-		newSlide.Shapes[2].TextFrame.TextRange.Text = "This is content added to a new slide.";
+		Slide newSlide = powerPoint.CreateSlide(2, PpSlideLayout.ppLayoutText);
+		newSlide.SetTitle("New Slide Title");
+		newSlide.SetText("This is content added to a new slide.");
 
 		powerPoint.SaveAs(saveFilePath);
 
