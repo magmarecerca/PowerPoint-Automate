@@ -19,10 +19,6 @@ internal abstract class Program {
 		slide.SetTitle("Copy of first slide with different title.");
 		slide.SetText("This slide was edited using C# from a template.");
 
-		// Slide newSlide = powerPoint.CreateSlide(2, PpSlideLayout.ppLayoutText);
-		// newSlide.SetTitle("New Slide Title");
-		// newSlide.SetText("This is content added to a new slide.");
-
 		powerPoint.SaveAs(saveFilePath);
 
 		powerPoint.Dispose();
