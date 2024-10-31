@@ -27,18 +27,20 @@ public partial class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Mark
 		throw new KeyNotFoundException($"No marker found for {marker}.");
 	}
 
-	public int GetSlideNumber() => slide.SlideNumber;
+	public int SlideNumber => slide.SlideNumber;
 
-	public bool IsTemplate() {
-		foreach (Shape shape in slide.Shapes) {
-			if (!shape.TextFrame.HasText.AsBool())
-				continue;
+	public bool IsTemplate {
+		get {
+			foreach (Shape shape in slide.Shapes) {
+				if (!shape.TextFrame.HasText.AsBool())
+					continue;
 
-			if (TemplateRegex().IsMatch(shape.TextFrame.TextRange.Text))
-				return true;
+				if (TemplateRegex().IsMatch(shape.TextFrame.TextRange.Text))
+					return true;
+			}
+
+			return false;
 		}
-
-		return false;
 	}
 
 	public void MoveTo(int number) {
@@ -56,7 +58,7 @@ public partial class Slide(Microsoft.Office.Interop.PowerPoint.Slide slide, Mark
 		if (other == null)
 			return -1;
 
-		return GetSlideNumber().CompareTo(other.GetSlideNumber());
+		return SlideNumber.CompareTo(other.SlideNumber);
 	}
 
     [GeneratedRegex(@"\{\{[^{}]+\}\}")]

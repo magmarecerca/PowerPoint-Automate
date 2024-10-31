@@ -25,7 +25,7 @@ public class PowerPoint : IDisposable {
 	public PowerPoint(string filePath, Markers markers) : this(filePath) => _markers = markers;
 
 	public Slide GetSlide(int number) {
-		foreach (Slide slide in _slides.Where(slide => slide.GetSlideNumber() == number)) {
+		foreach (Slide slide in _slides.Where(slide => slide.SlideNumber == number)) {
 			return slide;
 		}
 		throw new ArgumentOutOfRangeException($"The slide with number {number} does not exist.");
@@ -44,7 +44,7 @@ public class PowerPoint : IDisposable {
 	}
 
 	public Slide DuplicateSlide(Slide original) {
-		return DuplicateSlideAt(original.GetSlideNumber() + 1, original);
+		return DuplicateSlideAt(original.SlideNumber + 1, original);
 	}
 
 	public void SaveAs(string filePath) {
@@ -60,7 +60,7 @@ public class PowerPoint : IDisposable {
 	/// <b>WARNING:</b> this method is destructive, you should call it right before exporting the project.
 	/// </summary>
 	public void RemoveTemplateSlides() {
-		List<Slide> templateSlides = _slides.Where(slide => slide.IsTemplate()).ToList();
+		List<Slide> templateSlides = _slides.Where(slide => slide.IsTemplate).ToList();
 		foreach (Slide slide in templateSlides)
 			RemoveSlide(slide);
 	}
