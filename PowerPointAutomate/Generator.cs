@@ -4,9 +4,9 @@ using PowerAutomation;
 
 namespace PowerPointAutomate;
 
-public class Generator(PowerPoint powerPoint, string participantImagesFolderPath, string logosFolderPath) {
-	private readonly Slide _prizeTitleTemplate = powerPoint.GetSlide(2);
-	private readonly Slide _prizeResultTemplate = powerPoint.GetSlide(3);
+public class Generator(PowerPoint powerPoint, string participantImagesFolderPath, string logosFolderPath, int templateIndex) {
+	private readonly Slide _prizeTitleTemplate = powerPoint.GetSlide(templateIndex);
+	private readonly Slide _prizeResultTemplate = powerPoint.GetSlide(templateIndex + 1);
 
 	public void Generate(string csvPath) {
 		List<Prize> prizes = GetPrizes(csvPath);
@@ -14,6 +14,9 @@ public class Generator(PowerPoint powerPoint, string participantImagesFolderPath
 
 		Console.WriteLine("Presentation modified successfully");
 	}
+
+	private int CalculatePrizeSlideIndex(int prizeIndex) =>
+		_prizeTitleTemplate.SlideNumber + 2 + 2 * prizeIndex;
 
 	private void CreatePrizeSlides(List<Prize> prizes) {
 		for (int i = 0; i < prizes.Count; i++) {
@@ -27,8 +30,11 @@ public class Generator(PowerPoint powerPoint, string participantImagesFolderPath
 		}
 	}
 
-	private int CalculatePrizeSlideIndex(int prizeIndex) {
-		return _prizeTitleTemplate.SlideNumber + 2 + 2 * prizeIndex;
+	private void CreatePrizeTitleSlide(int slideNumber, Prize prize) {
+		Slide titleSlide = powerPoint.DuplicateSlideAt(slideNumber, _prizeTitleTemplate);
+		titleSlide.SetPrizeName(prize.PrizeName);
+		string prizeLogo = Path.Combine(logosFolderPath, prize.PrizeLogo);
+		titleSlide.SetPrizeLogo(prizeLogo);
 	}
 
 	private void CreatePrizeWinnerSlide(int slideNumber, Prize prize) {
@@ -43,13 +49,6 @@ public class Generator(PowerPoint powerPoint, string participantImagesFolderPath
 		resultSlide.SetAuthors($"{prize.Author1}\n{prize.Author2}\n{prize.Author3}\n{prize.Author4}");
 		string participantImage = Path.Combine(participantImagesFolderPath, prize.ParticipantImage);
 		resultSlide.SetParticipantImage(participantImage);
-	}
-
-	private void CreatePrizeTitleSlide(int slideNumber, Prize prize) {
-		Slide titleSlide = powerPoint.DuplicateSlideAt(slideNumber, _prizeTitleTemplate);
-		titleSlide.SetPrizeName(prize.PrizeName);
-		string prizeLogo = Path.Combine(logosFolderPath, prize.PrizeLogo);
-		titleSlide.SetPrizeLogo(prizeLogo);
 	}
 
 	private static List<Prize> GetPrizes(string csvPath) {

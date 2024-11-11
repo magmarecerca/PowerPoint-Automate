@@ -20,7 +20,13 @@ internal abstract class Program {
 			Markers markers = new();
 			PowerPoint powerPoint = new(templateFilePath, markers);
 
-			Generator generator = new(powerPoint, participantImagesFolderPath, logosFolderPath);
+			Console.WriteLine("Write the prizes template index:");
+			string? readTemplateIndex = Console.ReadLine();
+			if (readTemplateIndex == null)
+				goto program_end;
+			int templateIndex = int.Parse(readTemplateIndex);
+
+			Generator generator = new(powerPoint, participantImagesFolderPath, logosFolderPath, templateIndex);
 			generator.Generate(csvPath);
 			generator.Export(saveFilePath);
 
